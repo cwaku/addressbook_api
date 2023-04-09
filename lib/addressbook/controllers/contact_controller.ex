@@ -6,16 +6,21 @@ defmodule Addressbook.Processor do
 
   def save_contact(map_) do
     # make use of changeset to save contact
-    IO.inspect map_
-    contact = map_
-    |> Map.update!(:suburb_id, &String.to_integer/1)
-    |> Map.update!(:user_id, &String.to_integer/1)
-    IO.inspect contact
+    IO.inspect(map_)
+
+    contact =
+      map_
+      |> Map.update!(:suburb_id, &String.to_integer/1)
+      |> Map.update!(:user_id, &String.to_integer/1)
+
+    IO.inspect(contact)
     changeset = Contact.changeset(%Contact{}, contact)
+
     case Repo.insert(changeset) do
-      {:ok, result}->
+      {:ok, result} ->
         {:ok, result}
-      {:error, reason}->
+
+      {:error, reason} ->
         {:error, reason}
     end
   end
@@ -23,10 +28,11 @@ defmodule Addressbook.Processor do
   # get all contacts belonging to a user
   @spec get_contacts(any) :: {:error, %{error: <<_::136>>}} | {:ok, any}
   def get_contacts(user_id) do
-    case Repo.all(from c in Contact, where: c.user_id == ^user_id) do
-      []->
+    case Repo.all(from(c in Contact, where: c.user_id == ^user_id)) do
+      [] ->
         {:error, %{error: "No contacts found"}}
-      result->
+
+      result ->
         {:ok, result}
     end
   end

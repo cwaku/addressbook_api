@@ -11,8 +11,9 @@ defmodule Addressbook.Application do
       # Starts a worker by calling: Addressbook.Worker.start_link(arg)
       # {Addressbook.Worker, arg}
       Addressbook.Repo,
-      :hackney_pool.child_spec(:websrv_pool, [timeout: 120_000, max_connections: 10_000]),
-	    {Plug.Cowboy, scheme: :http, plug: Addressbook, options: [port: 3069, ip: {10,136,168,7}]}
+      :hackney_pool.child_spec(:websrv_pool, timeout: 120_000, max_connections: 10_000),
+      {Plug.Cowboy,
+       scheme: :http, plug: Addressbook, options: [port: 3069, ip: {10, 136, 168, 7}]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
