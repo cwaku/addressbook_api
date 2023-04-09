@@ -82,10 +82,61 @@ defmodule Addressbook do
     end
   end
 
-  # post "/contacts", plug(Addressbook.ContactController.create(conn))
+  # Get all contacts belong to user with number
+  get "/contacts/:user_id" do
+    user_id = conn.params["user_id"]
+    # console user_id
+    IO.inspect user_id
+    case Validate.parse_user_id(user_id) do
+      {:ok, user_id}->
+        case Processor.get_contacts(user_id) do
+          {:ok, result}->
+            conn
+            |> put_status(200)
+            |> put_resp_header("content-type", "application/json")
+            |> send_resp(200, Poison.encode!(result))
+          {:error, reason}->
+            conn
+            |> put_status(400)
+            |> put_resp_header("content-type", "application/json")
+            |> send_resp(400, Poison.encode!(reason))
+        end
+      {:error, reason}->
+        conn
+        |> put_status(400)
+        |> put_resp_header("content-type", "application/json")
+        |> send_resp(400, Poison.encode!(reason))
+    end
+  end
+
+
 
   # Handle requests that don't match any routes
   match _ do
     send_resp(conn, 404, "Not found")
   end
 end
+
+
+
+# Validate.parse_user_id(user_id) do
+#   {:ok, user_id}->
+#     case Processor.get_contacts(user_id) do
+#       {:ok, result}->
+#         conn
+#         |> put_status(200)
+#         |> put_resp_header("content-type", "application/json")
+#         |> send_resp(200, Poison.encode!(result))
+#       {:error, reason}->
+#         conn
+#         |> put_status(400)
+#         |> put_resp_header("content-type", "application/json")
+#         |> send_resp(400, Poison.encode!(reason))
+#     end
+#   {:error, reason}->
+#     conn
+#     |> put_status(400)
+#     |> put_resp_header("content-type", "application/json")
+#     |> send_resp(400, Poison.encode!(reason))
+# end
+# end

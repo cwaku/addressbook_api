@@ -46,9 +46,11 @@ defmodule Addressbook.Validate do
   def parse_user_id(nil) do
     {:error, Constants.err_missing_user_id()}
   end
+
   def parse_user_id("") do
     {:error, Constants.err_missing_user_id()}
   end
+
   def parse_user_id(user_id) do
     if is_binary(user_id) do
       {:ok, user_id}

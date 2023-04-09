@@ -1,4 +1,6 @@
 defmodule Addressbook.Processor do
+  import Ecto.Query
+
   alias Addressbook.Repo
   alias Addressbook.Contact
 
@@ -15,6 +17,17 @@ defmodule Addressbook.Processor do
         {:ok, result}
       {:error, reason}->
         {:error, reason}
+    end
+  end
+
+  # get all contacts belonging to a user
+  @spec get_contacts(any) :: {:error, %{error: <<_::136>>}} | {:ok, any}
+  def get_contacts(user_id) do
+    case Repo.all(from c in Contact, where: c.user_id == ^user_id) do
+      []->
+        {:error, %{error: "No contacts found"}}
+      result->
+        {:ok, result}
     end
   end
 end
