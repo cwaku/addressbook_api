@@ -80,4 +80,18 @@ defmodule Addressbook.Validate do
       {:error, Constants.err_suburb_id()}
     end
   end
+
+  def parse_contact_id(nil) do
+    {:error, Constants.err_missing_contact_id()}
+  end
+  def parse_contact_id("") do
+    {:error, Constants.err_missing_contact_id()}
+  end
+  def parse_contact_id(contact_id) do
+    if is_binary(contact_id) do
+      {:ok, contact_id}
+    else
+      {:error, Constants.err_contact_id()}
+    end
+  end
 end

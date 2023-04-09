@@ -63,7 +63,7 @@ defmodule Addressbook do
     end
   end
 
-  # Get all contacts belong to user with number
+  # Get all contacts belong to user
   get "/contacts/:user_id" do
     user_id = conn.params["user_id"]
 
@@ -88,6 +88,52 @@ defmodule Addressbook do
         |> put_status(400)
         |> put_resp_header("content-type", "application/json")
         |> send_resp(400, Poison.encode!(reason))
+    end
+  end
+
+  # Delete contact
+  delete "/contact" do
+    # contact_id = conn.params["contact_id"]
+    {:ok, body, conn} = read_body(conn)
+    # read params for contact id
+
+
+    case Poison.decode(body) do
+      {:ok, result} ->
+        with {:ok, user_id} <- Validate.parse_user_id(result["user_id"]),
+             {:ok, contact_id} <- Validate.parse_contact_id(result["contact_id"]) do
+          case Processor.delete_contact(user_id, contact_id) do
+            {:ok, result} ->
+              conn
+              |> put_status(200)
+              |> put_resp_header("content-type", "application/json")
+              |> send_resp(200, Poison.encode!(result))
+
+            {:error, reason} ->
+              conn
+              |> put_status(400)
+              |> put_resp_header("content-type", "application/json")
+              |> send_resp(400, Poison.encode!(reason))
+          end
+        else
+          {:error, reason} ->
+            conn
+            |> put_status(400)
+            |> put_resp_header("content-type", "application/json")
+            |> send_resp(400, Poison.encode!(reason))
+        end
+      {:error, _reason} ->
+        conn
+        |> put_status(400)
+        |> put_resp_header("content-type", "application/json")
+        # |> send_resp(400, Poison.encode!(reason))
+        # send response with reason set to "Invalid request, body should be JSON"
+        |> send_resp(400, Poison.encode!(
+          %{
+            resp_code: "000",
+            resp_msg: "Invalid request, body should be JSON"
+          }
+        ))
     end
   end
 

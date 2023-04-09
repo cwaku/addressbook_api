@@ -11,7 +11,11 @@ defmodule Addressbook.Contact do
     field(:active_status, :boolean, default: true)
     field(:inserted_at, :utc_datetime, default: DateTime.utc_now() |> DateTime.truncate(:second))
     field(:created_at, :utc_datetime, default: DateTime.utc_now() |> DateTime.truncate(:second))
-    field(:updated_at, :utc_datetime, default: DateTime.utc_now() |> DateTime.truncate(:second))
+    # field(:updated_at, :naive_datetime)
+    # set datetime to naive_datetime with default value
+    # field(:updated_at, :naive_datetime, default: NaiveDateTime.utc_now())
+    # add datetime to updated_at without the timezone
+    field(:updated_at, :naive_datetime, default: NaiveDateTime.local_now)
 
     belongs_to(:user, Addressbook.User)
     belongs_to(:suburb, Addressbook.Suburb)

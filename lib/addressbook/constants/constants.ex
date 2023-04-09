@@ -79,4 +79,18 @@ defmodule Addressbook.Constants do
       resp_msg: "Suburb id is required"
     }
   end
+
+  def err_missing_contact_id do
+    %{
+      resp_code: "059",
+      resp_msg: "Contact id is required"
+    }
+  end
+
+  def err_contact_id do
+    %{
+      resp_code: "060",
+      resp_msg: "Contact id must be a combination of alphanumeric characters"
+    }
+  end
 end
