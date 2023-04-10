@@ -40,29 +40,57 @@ defmodule Addressbook.Processor do
   # Delete contact by updating active_status to fasle and del_status to true
   # ToDo: Fix this
   def delete_contact(user_id, contact_id) do
-    contact = Repo.get_by(Contact, %{id: String.to_integer(contact_id), user_id: String.to_integer(user_id)})
+    case get_contact(user_id, contact_id) do
+      {:ok, contact} ->
+        changeset = Contact.changeset(contact, %{active_status: false, del_status: true})
 
-    case contact do
+        case Repo.update(changeset) do
+          {:ok, result} ->
+            {:ok, result}
+
+          {:error, reason} ->
+            {:error, reason}
+        end
+
+      {:error, reason} ->
+        {:error, reason}
+    end
+  end
+
+  # get contact. The returned contact will be used in other functions
+  def get_contact(user_id, contact_id) do
+    case Repo.get_by(Contact, %{id: String.to_integer(contact_id), user_id: String.to_integer(user_id)}) do
       nil ->
         {:error, %{error: "Contact not found"}}
 
       contact ->
-        changeset = Contact.changeset(contact, %{active_status: false, del_status: true})
-        IO.inspect(changeset, label: "Changeset:")
-
-        case Repo.update(changeset) do
-          {:ok, result} ->
-            IO.inspect(result, label: "Result:")
-            updated_contact = Repo.get(Contact, contact_id)
-            IO.inspect(updated_contact, label: "Updated Contact:")
-            {:ok, result}
-
-          {:error, reason} ->
-            IO.inspect(reason, label: "Error:")
-            {:error, reason}
-        end
+        {:ok, contact}
     end
   end
+
+  # update contact. should update the contact's active_status and del_status to true respectively. After, it should create a new contact with the current map
+  def update_contact(user_id, contact_id, map_) do
+    case get_contact(user_id, contact_id) do
+      {:ok, contact} ->
+        changeset = Contact.changeset(contact, %{active_status: false, del_status: true})
+
+        case Repo.update(changeset) do
+          {:ok, _result} ->
+            # create a new contact with the save_contact function
+            case save_contact(map_) do
+            {:ok, result} ->
+              {:ok, result}
+
+            {:error, reason} ->
+              {:error, reason}
+            end
+
+          {:error, reason} ->
+            {:error, reason}
+        end
+      end
+    end
+
 
 
 end
