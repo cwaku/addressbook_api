@@ -8,7 +8,27 @@ defmodule Addressbook.MixProject do
       elixir: "~> 1.14",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
-      # default_cli_flags: [:config, "config/runtime.dev.exs"]
+      description: "Addressbook API",
+      package: [
+        maintainers: ["cwaku"],
+        links: %{
+          "GitHub" => "https://github.com/cwaku/addressbook_api"
+        },
+        licenses: ["MIT"],
+      ],
+
+      # add aliases
+      aliases: aliases(),
+
+      # Docs
+    name: "Addressbook",
+    source_url: "https://github.com/cwaku/addressbook_api",
+    # homepage_url: "http://YOUR_PROJECT_HOMEPAGE",
+    docs: [
+      main: "Addressbook", # The main page in the docs
+      # logo: "path/to/logo.png",
+      extras: ["README.md"]
+    ]
     ]
   end
 
@@ -38,7 +58,8 @@ defmodule Addressbook.MixProject do
       {:ecto, "~> 3.9"},
       {:ecto_sql, "~> 3.8"},
       {:postgrex, "~> 0.16"},
-      {:httpoison, "~> 1.8"}
+      {:httpoison, "~> 1.8"},
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false}
     ]
   end
 end
