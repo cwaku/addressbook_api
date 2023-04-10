@@ -4,6 +4,9 @@ defmodule Addressbook do
   # alias Addressbook.{Contact, Repo}
   alias Addressbook.Validate
   alias Addressbook.Processor
+  alias Addressbook.RegionsController
+  alias Addressbook.SuburbsController
+  alias Addressbook.CitiesController
 
   # Attach the Logger to log incoming requests
   plug(Plug.Logger)
@@ -183,6 +186,68 @@ defmodule Addressbook do
 
       {:error, reason} ->
         {:error, reason}
+    end
+  end
+
+  # Get all Regions
+  get "/regions" do
+    case RegionsController.get_regions() do
+      {:ok, result} ->
+        conn
+        |> put_status(200)
+        |> put_resp_header("content-type", "application/json")
+        |> send_resp(200, Poison.encode!(result))
+
+      {:error, reason} ->
+        conn
+        |> put_status(400)
+        |> put_resp_header("content-type", "application/json")
+        |> send_resp(400, Poison.encode!(reason))
+    end
+  end
+
+  # Get all Suburbs
+  get "/suburbs" do
+    case SuburbsController.get_suburbs() do
+      {:ok, result} ->
+        conn
+        |> put_status(200)
+        |> put_resp_header("content-type", "application/json")
+        |> send_resp(200, Poison.encode!(result))
+
+      {:error, reason} ->
+        conn
+        |> put_status(400)
+        |> put_resp_header("content-type", "application/json")
+        |> send_resp(400, Poison.encode!(reason))
+
+        _ ->
+          conn
+          |> put_status(400)
+          |> put_resp_header("content-type", "application/json")
+          |> send_resp(400, Poison.encode!(
+            %{
+              resp_code: "000",
+              resp_msg: "Invalid request, body should be JSON"
+            }
+          ))
+    end
+  end
+
+  # Get all cities
+  get "/cities" do
+    case CitiesController.get_cities() do
+      {:ok, result} ->
+        conn
+        |> put_status(200)
+        |> put_resp_header("content-type", "application/json")
+        |> send_resp(200, Poison.encode!(result))
+
+      {:error, reason} ->
+        conn
+        |> put_status(400)
+        |> put_resp_header("content-type", "application/json")
+        |> send_resp(400, Poison.encode!(reason))
     end
   end
 
