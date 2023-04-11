@@ -220,17 +220,6 @@ defmodule Addressbook do
         |> put_status(400)
         |> put_resp_header("content-type", "application/json")
         |> send_resp(400, Poison.encode!(reason))
-
-        _ ->
-          conn
-          |> put_status(400)
-          |> put_resp_header("content-type", "application/json")
-          |> send_resp(400, Poison.encode!(
-            %{
-              resp_code: "000",
-              resp_msg: "Invalid request, body should be JSON"
-            }
-          ))
     end
   end
 
