@@ -1,28 +1,28 @@
 # Addressbook
 
-**TODO: Add description**
+A simple Elixir API for managing an addressbook. It allows all the CRUD operations for managing contacts.
 
 ## Endpoints
 
 
-### GET `/regions`
+##### GET `/regions`
 
 Returns a list of all regions.
 
-### GET `/cities`
+##### GET `/cities`
 
 Returns a list of all cities.
 
-### GET `/suburbs`
+##### GET `/suburbs`
 
 Returns a list of all suburbs.
 
 
-### GET `/contacts/:user_id`
+##### GET `/contacts/:user_id`
 
 Returns a list of all contacts that belongs to the user.
 
-### POST `/contact`
+##### POST `/contact`
 
 Creates a new contact. This endpoint requires a JSON
 body with the following structure:
@@ -38,7 +38,7 @@ body with the following structure:
 ```
 
 
-### PUT `/contact/:user_id/:contact_id`
+##### PUT `/contact/:user_id/:contact_id`
 
 Updates a contact.
 This endpoint requires a JSON body with the following structure:
@@ -53,7 +53,7 @@ This endpoint requires a JSON body with the following structure:
 }
 ```
 
-### DELETE `/contact`
+##### DELETE `/contact`
 
 Deletes a contact.
 This endpoint requires a JSON body with the following structure:
