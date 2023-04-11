@@ -1,7 +1,7 @@
-defmodule Addressbook.RegionsController do
-  import Ecto.Query
+defmodule Addressbook.Controller.Region do
+
   alias Addressbook.Repo
-  alias Addressbook.Region
+  alias Addressbook.Schema.Region
 
   def get_regions do
     case Repo.all(Region) do

@@ -3,10 +3,10 @@ defmodule Addressbook do
 
   # alias Addressbook.{Contact, Repo}
   alias Addressbook.Validate
-  alias Addressbook.Processor
-  alias Addressbook.RegionsController
-  alias Addressbook.SuburbsController
-  alias Addressbook.CitiesController
+  alias Addressbook.Controller.Contact
+  alias Addressbook.Controller.Region
+  alias Addressbook.Controller.Suburb
+  alias Addressbook.Controller.City
 
   # Attach the Logger to log incoming requests
   plug(Plug.Logger)
@@ -33,7 +33,7 @@ defmodule Addressbook do
             suburb_id: suburb_id
           }
 
-          case Processor.save_contact(contact) do
+          case Contact.save_contact(contact) do
             {:ok, result} ->
               IO.inspect(result)
 
@@ -67,7 +67,7 @@ defmodule Addressbook do
 
     case Validate.parse_user_id(user_id) do
       {:ok, user_id} ->
-        case Processor.get_contacts(user_id) do
+        case Contact.get_contacts(user_id) do
           {:ok, result} ->
             conn
             |> put_status(200)
@@ -100,7 +100,7 @@ defmodule Addressbook do
       {:ok, result} ->
         with {:ok, user_id} <- Validate.parse_user_id(result["user_id"]),
              {:ok, contact_id} <- Validate.parse_contact_id(result["contact_id"]) do
-          case Processor.delete_contact(user_id, contact_id) do
+          case Contact.delete_contact(user_id, contact_id) do
             {:ok, result} ->
               conn
               |> put_status(200)
@@ -158,7 +158,7 @@ defmodule Addressbook do
             contact_id: contact_id
           }
 
-          case Processor.update_contact(user_id, contact_id, contact) do
+          case Contact.update_contact(user_id, contact_id, contact) do
             {:ok, result} ->
               conn
               |> put_status(200)
@@ -186,7 +186,7 @@ defmodule Addressbook do
 
   # Get all Regions
   get "/regions" do
-    case RegionsController.get_regions() do
+    case Region.get_regions() do
       {:ok, result} ->
         conn
         |> put_status(200)
@@ -203,7 +203,7 @@ defmodule Addressbook do
 
   # Get all Suburbs
   get "/suburbs" do
-    case SuburbsController.get_suburbs() do
+    case Suburb.get_suburbs() do
       {:ok, result} ->
         conn
         |> put_status(200)
@@ -220,7 +220,7 @@ defmodule Addressbook do
 
   # Get all cities
   get "/cities" do
-    case CitiesController.get_cities() do
+    case City.get_cities() do
       {:ok, result} ->
         conn
         |> put_status(200)

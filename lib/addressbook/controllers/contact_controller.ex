@@ -1,8 +1,8 @@
-defmodule Addressbook.Processor do
+defmodule Addressbook.Controller.Contact do
   import Ecto.Query
 
   alias Addressbook.Repo
-  alias Addressbook.Contact
+  alias Addressbook.Schema.Contact
 
   def save_contact(map_) do
     # make use of changeset to save contact

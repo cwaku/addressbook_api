@@ -1,4 +1,4 @@
-defmodule Addressbook.Constants do
+defmodule Addressbook.Constants.Constants do
   # declare constants here
   @spec err_first_name :: %{resp_code: <<_::24>>, resp_msg: <<_::472>>}
   def err_first_name do

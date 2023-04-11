@@ -1,5 +1,5 @@
 defmodule Addressbook.Validate do
-  alias Addressbook.Constants
+  alias Addressbook.Constants.Constants
 
   def parse_first_name(nil) do
     {:error, Constants.err_missing_first_name()}

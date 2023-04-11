@@ -1,4 +1,4 @@
-defmodule Addressbook.Contact do
+defmodule Addressbook.Schema.Contact do
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -1,4 +1,4 @@
-defmodule Addressbook.Suburb do
+defmodule Addressbook.Schema.Suburb do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -14,6 +14,14 @@ defmodule Addressbook.Suburb do
     belongs_to(:user, Addressbook.User)
   end
 
+  @spec changeset(
+          {map, map}
+          | %{
+              :__struct__ => atom | %{:__changeset__ => map, optional(any) => any},
+              optional(atom) => any
+            },
+          :invalid | %{optional(:__struct__) => none, optional(atom | binary) => any}
+        ) :: Ecto.Changeset.t()
   def changeset(suburb, attrs) do
     suburb
     |> cast(attrs, [:name, :city_id])

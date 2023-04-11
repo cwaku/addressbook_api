@@ -1,4 +1,4 @@
-defmodule Addressbook.City do
+defmodule Addressbook.Schema.City do
   use Ecto.Schema
   import Ecto.Changeset
 

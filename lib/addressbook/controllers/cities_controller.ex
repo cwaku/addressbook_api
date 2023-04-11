@@ -1,7 +1,7 @@
-defmodule Addressbook.CitiesController do
+defmodule Addressbook.Controller.City do
 
   alias Addressbook.Repo
-  alias Addressbook.City
+  alias Addressbook.Schema.City
 
   def get_cities do
     case Repo.all(City) do
