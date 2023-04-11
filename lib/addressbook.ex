@@ -95,7 +95,6 @@ defmodule Addressbook do
     {:ok, body, conn} = read_body(conn)
     # read params for contact id
 
-
     case Poison.decode(body) do
       {:ok, result} ->
         with {:ok, user_id} <- Validate.parse_user_id(result["user_id"]),
@@ -120,18 +119,20 @@ defmodule Addressbook do
             |> put_resp_header("content-type", "application/json")
             |> send_resp(400, Poison.encode!(reason))
         end
+
       {:error, _reason} ->
         conn
         |> put_status(400)
         |> put_resp_header("content-type", "application/json")
         # |> send_resp(400, Poison.encode!(reason))
         # send response with reason set to "Invalid request, body should be JSON"
-        |> send_resp(400, Poison.encode!(
-          %{
+        |> send_resp(
+          400,
+          Poison.encode!(%{
             resp_code: "000",
             resp_msg: "Invalid request, body should be JSON"
-          }
-        ))
+          })
+        )
     end
   end
 

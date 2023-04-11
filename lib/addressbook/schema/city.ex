@@ -12,11 +12,11 @@ defmodule Addressbook.Schema.City do
     field(:created_at, :utc_datetime, default: DateTime.utc_now() |> DateTime.truncate(:second))
     field(:updated_at, :naive_datetime, default: NaiveDateTime.local_now)
 
-    belongs_to(:region, Addressbook.Region)
-    belongs_to(:user, Addressbook.User)
-    has_many(:suburbs, Addressbook.Suburb)
+    belongs_to(:region, Addressbook.Schema.Region)
+    belongs_to(:user, Addressbook.Schema.User)
+    has_many(:suburbs, Addressbook.Schema.Suburb)
     # add references to user
-    has_many(:users, Addressbook.User)
+    has_many(:users, Addressbook.Schema.User)
   end
 
   def changeset(city, attrs) do

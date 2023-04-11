@@ -8,7 +8,7 @@ defmodule Addressbook.Schema.Suburb do
     # field(:active_status, :boolean, default: true)
     # field(:inserted_at, :utc_datetime, default: DateTime.utc_now() |> DateTime.truncate(:second))
     field(:created_at, :utc_datetime, default: DateTime.utc_now() |> DateTime.truncate(:second))
-    field(:updated_at, :naive_datetime, default: NaiveDateTime.local_now)
+    field(:updated_at, :naive_datetime, default: NaiveDateTime.local_now())
 
     belongs_to(:city, Addressbook.City)
     belongs_to(:user, Addressbook.User)

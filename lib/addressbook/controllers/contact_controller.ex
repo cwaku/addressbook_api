@@ -28,7 +28,11 @@ defmodule Addressbook.Controller.Contact do
   # get all contacts belonging to a user with active_status true and del_status false
   @spec get_contacts(any) :: {:error, %{error: <<_::136>>}} | {:ok, any}
   def get_contacts(user_id) do
-    case Repo.all(from c in Contact, where: c.user_id == ^user_id and c.active_status == true and c.del_status == false) do
+    case Repo.all(
+           from(c in Contact,
+             where: c.user_id == ^user_id and c.active_status == true and c.del_status == false
+           )
+         ) do
       [] ->
         {:error, %{error: "No contacts found"}}
 
@@ -59,7 +63,10 @@ defmodule Addressbook.Controller.Contact do
 
   # get contact. The returned contact will be used in other functions
   def get_contact(user_id, contact_id) do
-    case Repo.get_by(Contact, %{id: String.to_integer(contact_id), user_id: String.to_integer(user_id)}) do
+    case Repo.get_by(Contact, %{
+           id: String.to_integer(contact_id),
+           user_id: String.to_integer(user_id)
+         }) do
       nil ->
         {:error, %{error: "Contact not found"}}
 
@@ -78,22 +85,16 @@ defmodule Addressbook.Controller.Contact do
           {:ok, _result} ->
             # create a new contact with the save_contact function
             case save_contact(map_) do
-            {:ok, result} ->
-              {:ok, result}
+              {:ok, result} ->
+                {:ok, result}
 
-            {:error, reason} ->
-              {:error, reason}
+              {:error, reason} ->
+                {:error, reason}
             end
 
           {:error, reason} ->
             {:error, reason}
         end
-      end
     end
-
-
-
+  end
 end
-
-
-# %Contact{firstname: map_[:first_name], lastname: map_[:last_name], phone: map_[:phone_number], user_id: String.to_integer(map_[:user_id]), suburb_id: String.to_integer(map_[:suburb_id])}

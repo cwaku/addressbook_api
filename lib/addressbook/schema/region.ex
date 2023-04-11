@@ -10,10 +10,13 @@ defmodule Addressbook.Schema.Region do
     # field(:active_status, :boolean, default: true)
     # field(:inserted_at, :utc_datetime, default: DateTime.utc_now() |> DateTime.truncate(:second))
     field(:created_at, :utc_datetime, default: DateTime.utc_now() |> DateTime.truncate(:second))
-    field(:updated_at, :naive_datetime, default: NaiveDateTime.local_now)
+    field(:updated_at, :naive_datetime, default: NaiveDateTime.local_now())
 
-    has_many(:cities, Addressbook.City)
-    has_many(:users, Addressbook.User)
+    # has_many(:cities, Addressbook.City)
+
+    # add references to user
+    belongs_to(:user, Addressbook.Schema.User)
+    has_many(:users, Addressbook.Schema.User)
   end
 
   def changeset(region, attrs) do

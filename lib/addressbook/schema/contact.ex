@@ -17,8 +17,8 @@ defmodule Addressbook.Schema.Contact do
     # add datetime to updated_at without the timezone
     field(:updated_at, :naive_datetime, default: NaiveDateTime.local_now)
 
-    belongs_to(:user, Addressbook.User)
-    belongs_to(:suburb, Addressbook.Suburb)
+    belongs_to(:user, Addressbook.Schema.User)
+    belongs_to(:suburb, Addressbook.Schema.Suburb)
   end
 
   def changeset(contact, attrs) do
