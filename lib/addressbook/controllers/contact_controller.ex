@@ -26,6 +26,7 @@ defmodule Addressbook.Processor do
   end
 
   # get all contacts belonging to a user with active_status true and del_status false
+  @spec get_contacts(any) :: {:error, %{error: <<_::136>>}} | {:ok, any}
   def get_contacts(user_id) do
     case Repo.all(from c in Contact, where: c.user_id == ^user_id and c.active_status == true and c.del_status == false) do
       [] ->
