@@ -1,5 +1,9 @@
 import Config
 
+config :dotenv, path: ".env"
+
+Dotenv.load()
+
 case config_env() do
   :dev ->
         Code.require_file("runtime.dev.exs", "config")

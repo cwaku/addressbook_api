@@ -24,3 +24,6 @@ addressbook-*.tar
 
 # Temporary files, for example, from tests.
 /tmp/
+
+# ADD .env
+.env

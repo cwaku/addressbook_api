@@ -1,11 +1,9 @@
 import Config
 
 config :addressbook, Addressbook.Repo,
-  database: "gerald_addr_bk",
-  username: "gerald",
-  password: "test123",
-  hostname: "10.136.168.7",
-  port: "4044",
-  #prepare: :unnamed,
+  database: System.get_env("DATABASE_NAME")
+  username: System.get_env("DATABASE_USER")
+  password: System.get_env("DATABASE_PASSWORD")
+  hostname: System.get_env("DATABASE_HOST")
   pool_size: 2
-  # config: "config/runtime.dev.exs"
+  port: System.get_env("DATABASE_PORT")
