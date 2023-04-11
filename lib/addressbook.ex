@@ -14,11 +14,6 @@ defmodule Addressbook do
   plug(:match)
   plug(:dispatch)
 
-  get "/hello" do
-    conn
-    |> send_resp(200, "You are gay!")
-  end
-
   post "/contact" do
     {:ok, body, conn} = read_body(conn)
     IO.inspect(body)
