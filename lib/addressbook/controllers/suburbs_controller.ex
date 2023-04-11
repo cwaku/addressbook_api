@@ -1,5 +1,4 @@
 defmodule Addressbook.Controller.Suburb do
-
   alias Addressbook.Repo
   alias Addressbook.Schema.Suburb
 

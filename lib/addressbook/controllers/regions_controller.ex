@@ -1,5 +1,4 @@
 defmodule Addressbook.Controller.Region do
-
   alias Addressbook.Repo
   alias Addressbook.Schema.Region
 
