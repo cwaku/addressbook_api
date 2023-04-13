@@ -1,9 +1,9 @@
 import Config
 
 config :addressbook, Addressbook.Repo,
-  database: System.get_env("DATABASE_NAME")
-  username: System.get_env("DATABASE_USER")
-  password: System.get_env("DATABASE_PASSWORD")
-  hostname: System.get_env("DATABASE_HOST")
-  pool_size: 2
-  port: System.get_env("DATABASE_PORT")
+  database: System.fetch_env!("TEST_DATABASE"),
+  username: System.fetch_env!("TEST_USER"),
+  password: System.fetch_env!("TEST_PASSWORD"),
+  hostname: System.fetch_env!("TEST_HOST"),
+  pool_size: 2,
+  port: System.fetch_env!("TEST_PORT")

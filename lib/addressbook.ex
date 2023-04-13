@@ -14,6 +14,47 @@ defmodule Addressbook do
   plug(:match)
   plug(:dispatch)
 
+  # Check if user exits with phone number
+  get "/validate" do
+    {:ok, body, conn} = read_body(conn)
+
+    case Poison.decode(body) do
+      {:ok, result} ->
+
+        with {:ok, phone} <- Validate.parse_phone_number_validate(result["phone"]) do
+          # remove 233 from the phone and after add prepend 0
+          phone = "0" <> String.slice(phone, 3, 10)
+          IO.puts phone
+
+          case Contact.validate_user(phone) do
+            {:ok, result} ->
+              conn
+              |> put_status(200)
+              |> put_resp_header("content-type", "application/json")
+              |> send_resp(200, Poison.encode!(result))
+
+            {:error, reason} ->
+              conn
+              |> put_status(400)
+              |> put_resp_header("content-type", "application/json")
+              |> send_resp(400, Poison.encode!(reason))
+          end
+        else
+          {:error, reason} ->
+            conn
+            |> put_status(400)
+            |> put_resp_header("content-type", "application/json")
+            |> send_resp(400, Poison.encode!(reason))
+        end
+
+      {:error, reason} ->
+        conn
+        |> put_status(400)
+        |> put_resp_header("content-type", "application/json")
+        |> send_resp(400, Poison.encode!(reason))
+    end
+  end
+
   post "/contact" do
     {:ok, body, conn} = read_body(conn)
     IO.inspect(body)
@@ -24,13 +65,15 @@ defmodule Addressbook do
              {:ok, lastname} <- Validate.parse_last_name(result["lastname"]),
              {:ok, user_id} <- Validate.parse_user_id(result["user_id"]),
              {:ok, suburb_id} <- Validate.parse_suburb_id(result["suburb_id"]),
+            #  {:ok, source} <- Validate.parse_source(result["source"]),
              {:ok, phone} <- Validate.parse_phone_number(result["phone"]) do
           contact = %{
             firstname: firstname,
             lastname: lastname,
             phone: phone,
             user_id: user_id,
-            suburb_id: suburb_id
+            suburb_id: suburb_id,
+            source: result["source"]
           }
 
           case Contact.save_contact(contact) do
@@ -64,6 +107,9 @@ defmodule Addressbook do
   # Get all contacts belong to user
   get "/contacts/:user_id" do
     user_id = conn.params["user_id"]
+    {:ok, body, conn} = read_body(conn)
+    IO.inspect body
+    IO.inspect user_id
 
     case Validate.parse_user_id(user_id) do
       {:ok, user_id} ->

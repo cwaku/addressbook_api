@@ -2,16 +2,32 @@ defmodule Addressbook.Controller.Contact do
   import Ecto.Query
 
   alias Addressbook.Repo
+  alias Addressbook.Schema.User
   alias Addressbook.Schema.Contact
 
+  def validate_user(phone) do
+    case Repo.all(
+           from(c in User,
+             where: c.phone == ^phone and c.active_status == true and c.del_status == false
+           )
+         ) do
+      [] ->
+        {:error, %{error: "User does not exist"}}
+
+      user ->
+        {:ok, user}
+    end
+  end
+
+  @spec save_contact(map) :: {:error, any} | {:ok, any}
   def save_contact(map_) do
     # make use of changeset to save contact
     IO.inspect(map_)
 
-    contact =
-      map_
-      |> Map.update!(:suburb_id, &String.to_integer/1)
-      |> Map.update!(:user_id, &String.to_integer/1)
+    contact = map_
+      # map_
+      # |> Map.update!(:suburb_id, &String.to_integer/1)
+      # |> Map.update!(:user_id, &String.to_integer/1)
 
     IO.inspect(contact)
     changeset = Contact.changeset(%Contact{}, contact)
@@ -30,7 +46,8 @@ defmodule Addressbook.Controller.Contact do
   def get_contacts(user_id) do
     case Repo.all(
            from(c in Contact,
-             where: c.user_id == ^user_id and c.active_status == true and c.del_status == false
+             where: c.user_id == ^user_id and c.active_status == true and c.del_status == false,
+             order_by: [desc: c.inserted_at]
            )
          ) do
       [] ->

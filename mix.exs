@@ -59,7 +59,8 @@ defmodule Addressbook.MixProject do
       {:ecto_sql, "~> 3.8"},
       {:postgrex, "~> 0.16"},
       {:httpoison, "~> 1.8"},
-      {:ex_doc, "~> 0.27", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.27", only: :dev, runtime: false},
+      {:dotenv, "~> 3.0.0", only: [:dev, :test]}
     ]
   end
 end
